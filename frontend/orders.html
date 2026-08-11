@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Orders — BookNest</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav id="main-nav" class="navbar"></nav>
+
+  <section class="section">
+    <h2 class="section-title" style="margin-bottom: 24px;">My Orders</h2>
+
+    <div class="orders-container">
+      
+      <!-- Orders List Container -->
+      <div id="orders-list-wrapper">
+        <!-- Rendered dynamically -->
+      </div>
+
+      <!-- Loading State -->
+      <div id="orders-loader">
+        <div class="empty-state" style="border: none; box-shadow: none;">
+          <i class="fas fa-spinner fa-spin" style="font-size: 32px; color: var(--primary);"></i>
+          <p>Retrieving your order history...</p>
+        </div>
+      </div>
+
+      <!-- Empty Orders State -->
+      <div id="orders-empty-view" style="display: none;">
+        <div class="empty-state">
+          <i class="fas fa-box-open"></i>
+          <h3>No orders placed yet</h3>
+          <p>You haven't ordered any books from us yet. Start exploring our catalog to build your library.</p>
+          <a href="/books.html" class="btn btn-primary">Browse Books</a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer id="main-footer"></footer>
+
+  <!-- Scripts -->
+  <script src="/js/utils.js"></script>
+  <script src="/js/orders.js"></script>
+</body>
+</html>

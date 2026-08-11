@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage Users — BookNest Control Panel</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+  <div class="admin-container">
+    
+    <!-- Sidebar Navigation -->
+    <aside class="admin-sidebar">
+      <div class="admin-sidebar-header">
+        <h2 style="color: #fff; font-size: 20px; font-weight: 800; display:flex; align-items:center; gap:8px;">
+          <i class="fas fa-book-reader" style="color: var(--primary);"></i> BookNest Admin
+        </h2>
+      </div>
+      
+      <ul class="admin-sidebar-menu">
+        <li><a href="/admin/dashboard.html"><i class="fas fa-chart-pie"></i> <span>Dashboard</span></a></li>
+        <li><a href="/admin/books.html"><i class="fas fa-book"></i> <span>Books CRUD</span></a></li>
+        <li><a href="/admin/users.html" class="active"><i class="fas fa-users"></i> <span>Manage Users</span></a></li>
+        <li><a href="/admin/orders.html"><i class="fas fa-shopping-cart"></i> <span>Manage Orders</span></a></li>
+        <li style="margin-top: auto; border-top: 1px solid #1e293b; padding-top: 10px;">
+          <a href="/index.html"><i class="fas fa-home"></i> <span>Client Store</span></a>
+        </li>
+      </ul>
+    </aside>
+
+    <!-- Main Workspace -->
+    <main class="admin-main">
+      
+      <header class="admin-header">
+        <div>
+          <h1>Customer Account Management</h1>
+          <p style="color: var(--text-muted); font-size: 14px; margin-top: 4px;">Search registered accounts, adjust authorization roles, and toggle access states.</p>
+        </div>
+      </header>
+
+      <!-- Users Table Card -->
+      <section class="admin-table-card">
+        <div class="admin-table-header">
+          <h3>Registered Users</h3>
+          <div class="admin-table-search">
+            <i class="fas fa-search"></i>
+            <input type="text" id="admin-users-search" placeholder="Search by name, email, mobile...">
+          </div>
+        </div>
+
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>Registered Date</th>
+                <th>Full Name</th>
+                <th>Email Address</th>
+                <th>Mobile Number</th>
+                <th>System Role</th>
+                <th>Account Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="admin-users-table-body">
+              <!-- Rendered dynamically -->
+              <tr>
+                <td colspan="7" style="text-align: center; padding: 40px;">
+                  <i class="fas fa-spinner fa-spin" style="font-size: 24px; color: var(--primary);"></i>
+                  <p style="margin-top: 10px;">Loading customer base...</p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+    </main>
+
+  </div>
+
+  <!-- Footer Scripts -->
+  <script src="/js/utils.js"></script>
+  <script src="/js/admin.js"></script>
+</body>
+</html>

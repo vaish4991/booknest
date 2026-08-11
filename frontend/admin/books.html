@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage Books — BookNest Control Panel</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+  <div class="admin-container">
+    
+    <!-- Sidebar Navigation -->
+    <aside class="admin-sidebar">
+      <div class="admin-sidebar-header">
+        <h2 style="color: #fff; font-size: 20px; font-weight: 800; display:flex; align-items:center; gap:8px;">
+          <i class="fas fa-book-reader" style="color: var(--primary);"></i> BookNest Admin
+        </h2>
+      </div>
+      
+      <ul class="admin-sidebar-menu">
+        <li><a href="/admin/dashboard.html"><i class="fas fa-chart-pie"></i> <span>Dashboard</span></a></li>
+        <li><a href="/admin/books.html" class="active"><i class="fas fa-book"></i> <span>Books CRUD</span></a></li>
+        <li><a href="/admin/users.html"><i class="fas fa-users"></i> <span>Manage Users</span></a></li>
+        <li><a href="/admin/orders.html"><i class="fas fa-shopping-cart"></i> <span>Manage Orders</span></a></li>
+        <li style="margin-top: auto; border-top: 1px solid #1e293b; padding-top: 10px;">
+          <a href="/index.html"><i class="fas fa-home"></i> <span>Client Store</span></a>
+        </li>
+      </ul>
+    </aside>
+
+    <!-- Main Workspace -->
+    <main class="admin-main">
+      
+      <header class="admin-header">
+        <div>
+          <h1>Book Inventory Management</h1>
+          <p style="color: var(--text-muted); font-size: 14px; margin-top: 4px;">Add, edit, or remove books in catalog shelves.</p>
+        </div>
+        <button class="btn btn-primary" id="btn-add-book"><i class="fas fa-plus"></i> Add New Book</button>
+      </header>
+
+      <!-- Books Table Card -->
+      <section class="admin-table-card">
+        <div class="admin-table-header">
+          <h3>Catalog Shelves</h3>
+          <div class="admin-table-search">
+            <i class="fas fa-search"></i>
+            <input type="text" id="admin-books-search" placeholder="Search by title, author, ISBN...">
+          </div>
+        </div>
+
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>Cover</th>
+                <th>Title & Author</th>
+                <th>Category</th>
+                <th>Price (Discount)</th>
+                <th>Stock Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="admin-books-table-body">
+              <!-- Rendered dynamically -->
+              <tr>
+                <td colspan="6" style="text-align: center; padding: 40px;">
+                  <i class="fas fa-spinner fa-spin" style="font-size: 24px; color: var(--primary);"></i>
+                  <p style="margin-top: 10px;">Loading book inventory...</p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+    </main>
+
+  </div>
+
+  <!-- Add/Edit Book Modal -->
+  <div id="book-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="book-modal-title">Add New Book</h3>
+        <button class="modal-close" id="close-book-modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form id="book-form">
+          <input type="hidden" id="book-form-id">
+          
+          <div class="form-group">
+            <label for="book-form-title">Book Title</label>
+            <input type="text" id="book-form-title" placeholder="e.g. JavaScript: The Good Parts" required>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+            <div class="form-group">
+              <label for="book-form-author">Author</label>
+              <input type="text" id="book-form-author" placeholder="e.g. Douglas Crockford" required>
+            </div>
+            <div class="form-group">
+              <label for="book-form-publisher">Publisher</label>
+              <input type="text" id="book-form-publisher" placeholder="e.g. O'Reilly Media" required>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+            <div class="form-group">
+              <label for="book-form-isbn">ISBN-13</label>
+              <input type="text" id="book-form-isbn" placeholder="e.g. 9780596517748" required>
+            </div>
+            <div class="form-group">
+              <label for="book-form-category">Category</label>
+              <select id="book-form-category" required>
+                <option value="">Select Category</option>
+                <option value="Fiction">Fiction</option>
+                <option value="Science">Science</option>
+                <option value="Technology">Technology</option>
+                <option value="Programming">Programming</option>
+                <option value="Business">Business</option>
+                <option value="History">History</option>
+                <option value="Competitive Exams">Competitive Exams</option>
+                <option value="Self-Help">Self-Help</option>
+                <option value="Novels">Novels</option>
+              </select>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px;">
+            <div class="form-group">
+              <label for="book-form-price">Price (₹)</label>
+              <input type="number" id="book-form-price" min="0" placeholder="e.g. 599" required>
+            </div>
+            <div class="form-group">
+              <label for="book-form-discount">Discount (%)</label>
+              <input type="number" id="book-form-discount" min="0" max="100" placeholder="0" value="0">
+            </div>
+            <div class="form-group">
+              <label for="book-form-stock">Stock Units</label>
+              <input type="number" id="book-form-stock" min="0" placeholder="10" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="book-form-cover">Cover Image URL</label>
+            <input type="url" id="book-form-cover" placeholder="e.g. https://covers.openlibrary.org/b/id/...-L.jpg" required>
+          </div>
+
+          <div class="form-group">
+            <label for="book-form-description">Description</label>
+            <textarea id="book-form-description" rows="4" placeholder="Brief synopsis or description of the book..." required></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 10px;" id="book-form-submit-btn">Save Book</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer Scripts -->
+  <script src="/js/utils.js"></script>
+  <script src="/js/admin.js"></script>
+</body>
+</html>

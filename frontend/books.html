@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>All Books — BookNest Catalog</title>
+  <meta name="description" content="Browse our extensive collection of books on BookNest. Search and filter by genre, author, rating, and price.">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav id="main-nav" class="navbar"></nav>
+
+  <div class="catalog-container">
+    <!-- Filters Sidebar -->
+    <aside class="filters-sidebar">
+      <div class="filter-section">
+        <h3 class="filter-title">Category</h3>
+        <div class="filter-options" id="category-filter-list">
+          <label class="checkbox-label"><input type="radio" name="category-radio" value="All" checked> All Categories</label>
+          <label class="checkbox-label"><input type="radio" name="category-radio" value="Fiction"> Fiction</label>
+          <label class="checkbox-label"><input type="radio" name="category-radio" value="Science"> Science</label>
+          <label class="checkbox-label"><input type="radio" name="category-radio" value="Technology"> Technology</label>
+          <label class="checkbox-label"><input type="radio" name="category-radio" value="Programming"> Programming</label>
+          <label class="checkbox-label"><input type="radio" name="category-radio" value="Business"> Business</label>
+          <label class="checkbox-label"><input type="radio" name="category-radio" value="History"> History</label>
+          <label class="checkbox-label"><input type="radio" name="category-radio" value="Competitive Exams"> Competitive Exams</label>
+          <label class="checkbox-label"><input type="radio" name="category-radio" value="Self-Help"> Self-Help</label>
+          <label class="checkbox-label"><input type="radio" name="category-radio" value="Novels"> Novels</label>
+        </div>
+      </div>
+
+      <div class="filter-section">
+        <h3 class="filter-title">Price Range</h3>
+        <div class="price-range-inputs">
+          <input type="number" id="price-min" placeholder="Min" min="0">
+          <span>to</span>
+          <input type="number" id="price-max" placeholder="Max" min="0">
+        </div>
+        <button class="btn btn-secondary" id="apply-price-filter" style="width: 100%; margin-top: 12px; padding: 8px 16px; font-size: 13px;">Apply Price</button>
+      </div>
+
+      <div class="filter-section">
+        <h3 class="filter-title">Customer Rating</h3>
+        <div class="filter-options">
+          <label class="checkbox-label"><input type="radio" name="rating-radio" value="0" checked> Any Rating</label>
+          <label class="checkbox-label"><input type="radio" name="rating-radio" value="4"> 4★ & above</label>
+          <label class="checkbox-label"><input type="radio" name="rating-radio" value="3"> 3★ & above</label>
+          <label class="checkbox-label"><input type="radio" name="rating-radio" value="2"> 2★ & above</label>
+        </div>
+      </div>
+
+      <div class="filter-section">
+        <h3 class="filter-title">Availability</h3>
+        <div class="filter-options">
+          <label class="checkbox-label"><input type="radio" name="availability-radio" value="" checked> All Books</label>
+          <label class="checkbox-label"><input type="radio" name="availability-radio" value="inStock"> In Stock</label>
+          <label class="checkbox-label"><input type="radio" name="availability-radio" value="lowStock"> Low Stock</label>
+          <label class="checkbox-label"><input type="radio" name="availability-radio" value="outOfStock"> Out of Stock</label>
+        </div>
+      </div>
+      
+      <button class="btn btn-secondary" id="reset-all-filters" style="width: 100%; margin-top: 8px;">Reset Filters</button>
+    </aside>
+
+    <!-- Books Listing Area -->
+    <main class="catalog-main">
+      <div class="catalog-header">
+        <div class="catalog-title">
+          <h2>Explore Books</h2>
+          <p style="font-size: 14px; color: var(--text-muted); margin-top: 4px;" id="books-count-text">Showing 0 books</p>
+        </div>
+        <div class="catalog-controls">
+          <select id="sort-select">
+            <option value="newest">Newest Arrivals</option>
+            <option value="priceAsc">Price: Low to High</option>
+            <option value="priceDesc">Price: High to Low</option>
+            <option value="ratingDesc">Customer Rating</option>
+            <option value="bestSelling">Best Selling</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="books-grid" id="catalog-books-container">
+        <!-- Renders dynamically -->
+        <div class="empty-state" style="grid-column: 1 / -1;">
+          <i class="fas fa-spinner fa-spin" style="font-size: 32px; color: var(--primary);"></i>
+          <p>Loading books from database...</p>
+        </div>
+      </div>
+
+      <div class="load-more-container">
+        <button class="btn btn-secondary" id="load-more-btn" style="display: none;">Load More</button>
+      </div>
+    </main>
+  </div>
+
+  <!-- Footer -->
+  <footer id="main-footer"></footer>
+
+  <!-- Scripts -->
+  <script src="/js/utils.js"></script>
+  <script src="/js/books.js"></script>
+</body>
+</html>

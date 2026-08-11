@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login — BookNest</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav id="main-nav" class="navbar"></nav>
+
+  <div class="auth-container">
+    <div class="auth-card">
+      <div class="auth-header">
+        <h2>Welcome Back</h2>
+        <p>Login to your BookNest account</p>
+      </div>
+
+      <form id="login-form">
+        <div class="form-group">
+          <label for="login-email">Email Address</label>
+          <input type="email" id="login-email" placeholder="name@example.com" required>
+        </div>
+
+        <div class="form-group">
+          <label for="login-password">Password</label>
+          <input type="password" id="login-password" placeholder="Enter your password" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 8px;">Login</button>
+      </form>
+
+      <div style="text-align: center; margin-top: 16px; font-size: 13px;">
+        <a href="#" id="forgot-password-link" style="color: var(--primary); font-weight: 500;">Forgot Password?</a>
+      </div>
+
+      <!-- Forgot Password Simulation Modal (Triggered via JS) -->
+      <div id="forgot-password-modal" class="modal">
+        <div class="modal-content" style="max-width: 400px;">
+          <div class="modal-header">
+            <h3>Reset Password</h3>
+            <button class="modal-close" id="close-forgot-modal">&times;</button>
+          </div>
+          <div class="modal-body">
+            <form id="forgot-form">
+              <div class="form-group">
+                <label for="forgot-email">Email Address</label>
+                <input type="email" id="forgot-email" placeholder="name@example.com" required>
+              </div>
+              <button type="submit" class="btn btn-primary" style="width: 100%;">Request Reset Token</button>
+            </form>
+
+            <form id="reset-form" style="display: none; margin-top: 20px; border-top: 1px solid var(--border); padding-top: 20px;">
+              <h4 style="margin-bottom: 12px; font-weight: 700;">Reset Your Password</h4>
+              <div class="form-group">
+                <label for="reset-token">Reset Token</label>
+                <input type="text" id="reset-token" placeholder="Paste the token here" required>
+              </div>
+              <div class="form-group">
+                <label for="reset-password">New Password</label>
+                <input type="password" id="reset-password" placeholder="At least 6 characters" required>
+              </div>
+              <button type="submit" class="btn btn-primary" style="width: 100%;">Reset Password</button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <div class="auth-footer">
+        Don't have an account? <a href="/register.html">Register Now</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer id="main-footer"></footer>
+
+  <!-- Scripts -->
+  <script src="/js/utils.js"></script>
+  <script src="/js/auth.js"></script>
+</body>
+</html>

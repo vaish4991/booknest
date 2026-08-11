@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard — BookNest Control Panel</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <!-- Chart.js for analytics -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+  <div class="admin-container">
+    
+    <!-- Sidebar Navigation -->
+    <aside class="admin-sidebar">
+      <div class="admin-sidebar-header">
+        <h2 style="color: #fff; font-size: 20px; font-weight: 800; display:flex; align-items:center; gap:8px;">
+          <i class="fas fa-book-reader" style="color: var(--primary);"></i> BookNest Admin
+        </h2>
+      </div>
+      
+      <ul class="admin-sidebar-menu">
+        <li><a href="/admin/dashboard.html" class="active"><i class="fas fa-chart-pie"></i> <span>Dashboard</span></a></li>
+        <li><a href="/admin/books.html"><i class="fas fa-book"></i> <span>Books CRUD</span></a></li>
+        <li><a href="/admin/users.html"><i class="fas fa-users"></i> <span>Manage Users</span></a></li>
+        <li><a href="/admin/orders.html"><i class="fas fa-shopping-cart"></i> <span>Manage Orders</span></a></li>
+        <li style="margin-top: auto; border-top: 1px solid #1e293b; padding-top: 10px;">
+          <a href="/index.html"><i class="fas fa-home"></i> <span>Client Store</span></a>
+        </li>
+      </ul>
+    </aside>
+
+    <!-- Main Workspace -->
+    <main class="admin-main">
+      
+      <header class="admin-header">
+        <div>
+          <h1>Analytics Dashboard</h1>
+          <p style="color: var(--text-muted); font-size: 14px; margin-top: 4px;">Real-time platform summaries and sales trends.</p>
+        </div>
+        
+        <div style="font-weight: 600; font-size: 14px;" id="admin-user-info">
+          Admin: <span id="admin-name" style="color: var(--primary);">...</span>
+        </div>
+      </header>
+
+      <!-- Stats Grid -->
+      <section class="stats-grid" id="stats-container">
+        <!-- Stats cards rendered dynamically -->
+        <div class="stat-card">
+          <div class="stat-info">
+            <h3>Revenue</h3>
+            <p>₹0</p>
+          </div>
+          <div class="stat-icon"><i class="fas fa-indian-rupee-sign"></i></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-info">
+            <h3>Total Orders</h3>
+            <p>0</p>
+          </div>
+          <div class="stat-icon"><i class="fas fa-shopping-bag"></i></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-info">
+            <h3>Active Users</h3>
+            <p>0</p>
+          </div>
+          <div class="stat-icon"><i class="fas fa-users"></i></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-info">
+            <h3>Low Stock</h3>
+            <p>0</p>
+          </div>
+          <div class="stat-icon" style="color:var(--danger); background-color:rgba(239,68,68,0.1);"><i class="fas fa-exclamation-triangle"></i></div>
+        </div>
+      </section>
+
+      <!-- Charts & Tables Row -->
+      <section class="admin-dashboard-charts">
+        
+        <!-- Sales Trend Line Chart -->
+        <div class="chart-card">
+          <h3>Sales & Revenue (Last 7 Days)</h3>
+          <div style="position: relative; height: 300px; width: 100%;">
+            <canvas id="salesChartCanvas"></canvas>
+          </div>
+        </div>
+
+        <!-- Popular Books Summary -->
+        <div class="chart-card">
+          <h3>Best Sellers Ranking</h3>
+          <div class="popular-books-list" id="popular-books-container">
+            <!-- Rendered dynamically -->
+          </div>
+        </div>
+
+      </section>
+
+    </main>
+
+  </div>
+
+  <!-- Scripts -->
+  <script src="/js/utils.js"></script>
+  <script src="/js/admin.js"></script>
+</body>
+</html>

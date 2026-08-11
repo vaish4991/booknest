@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BookNest — Discover Your Next Great Read</title>
+  <meta name="description" content="Explore thousands of books and find your perfect story on BookNest. Premium online book store with secure checkout and fast delivery.">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+  <!-- Navigation Bar (Injected dynamically) -->
+  <nav id="main-nav" class="navbar"></nav>
+
+  <!-- Hero Section -->
+  <header class="hero">
+    <div class="hero-content">
+      <h1>Discover Your Next Great Read</h1>
+      <p>Explore thousands of books and find your perfect story.</p>
+      <div class="hero-buttons">
+        <a href="/books.html" class="btn btn-primary"><i class="fas fa-shopping-bag"></i> Shop Now</a>
+        <a href="#featured" class="btn btn-secondary"><i class="fas fa-compass"></i> Explore Books</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Categories Section -->
+  <section class="section" id="categories">
+    <div class="section-header">
+      <h2 class="section-title">Shop by Category</h2>
+    </div>
+    <div class="category-grid" id="categories-container">
+      <div class="category-card" data-category="Fiction">
+        <i class="fas fa-theater-masks"></i>
+        <h3>Fiction</h3>
+      </div>
+      <div class="category-card" data-category="Science">
+        <i class="fas fa-atom"></i>
+        <h3>Science</h3>
+      </div>
+      <div class="category-card" data-category="Technology">
+        <i class="fas fa-laptop-code"></i>
+        <h3>Technology</h3>
+      </div>
+      <div class="category-card" data-category="Programming">
+        <i class="fas fa-code"></i>
+        <h3>Programming</h3>
+      </div>
+      <div class="category-card" data-category="Business">
+        <i class="fas fa-chart-line"></i>
+        <h3>Business</h3>
+      </div>
+      <div class="category-card" data-category="History">
+        <i class="fas fa-landmark"></i>
+        <h3>History</h3>
+      </div>
+      <div class="category-card" data-category="Competitive Exams">
+        <i class="fas fa-user-graduate"></i>
+        <h3>Competitive Exams</h3>
+      </div>
+      <div class="category-card" data-category="Self-Help">
+        <i class="fas fa-heartbeat"></i>
+        <h3>Self-Help</h3>
+      </div>
+      <div class="category-card" data-category="Novels">
+        <i class="fas fa-book"></i>
+        <h3>Novels</h3>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Books Section -->
+  <section class="section" id="featured">
+    <div class="section-header">
+      <h2 class="section-title">New Arrivals</h2>
+      <a href="/books.html" class="btn btn-secondary">View All</a>
+    </div>
+    <div class="books-grid" id="featured-books-container">
+      <!-- Injected dynamically -->
+      <div class="empty-state" style="grid-column: 1 / -1;">
+        <i class="fas fa-spinner fa-spin" style="font-size: 32px; color: var(--primary);"></i>
+        <p>Loading books from database...</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Best Sellers Section -->
+  <section class="section" id="bestsellers">
+    <div class="section-header">
+      <h2 class="section-title">Best Sellers</h2>
+      <a href="/books.html?sortBy=bestSelling" class="btn btn-secondary">View All</a>
+    </div>
+    <div class="books-grid" id="bestsellers-books-container">
+      <!-- Injected dynamically -->
+      <div class="empty-state" style="grid-column: 1 / -1;">
+        <i class="fas fa-spinner fa-spin" style="font-size: 32px; color: var(--primary);"></i>
+        <p>Loading books from database...</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Newsletter Subscription -->
+  <section class="newsletter">
+    <div class="newsletter-content">
+      <h2>Join Our Newsletter</h2>
+      <p>Subscribe to receive updates on new arrivals, special discounts, and literary events.</p>
+      <form class="newsletter-form" id="newsletter-form">
+        <input type="email" id="newsletter-email" placeholder="Your Email Address" required>
+        <button type="submit">Subscribe</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Footer (Injected dynamically) -->
+  <footer id="main-footer"></footer>
+
+  <!-- Scripts -->
+  <script src="/js/utils.js"></script>
+  <script src="/js/main.js"></script>
+</body>
+</html>

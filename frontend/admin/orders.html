@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage Orders — BookNest Control Panel</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+  <div class="admin-container">
+    
+    <!-- Sidebar Navigation -->
+    <aside class="admin-sidebar">
+      <div class="admin-sidebar-header">
+        <h2 style="color: #fff; font-size: 20px; font-weight: 800; display:flex; align-items:center; gap:8px;">
+          <i class="fas fa-book-reader" style="color: var(--primary);"></i> BookNest Admin
+        </h2>
+      </div>
+      
+      <ul class="admin-sidebar-menu">
+        <li><a href="/admin/dashboard.html"><i class="fas fa-chart-pie"></i> <span>Dashboard</span></a></li>
+        <li><a href="/admin/books.html"><i class="fas fa-book"></i> <span>Books CRUD</span></a></li>
+        <li><a href="/admin/users.html"><i class="fas fa-users"></i> <span>Manage Users</span></a></li>
+        <li><a href="/admin/orders.html" class="active"><i class="fas fa-shopping-cart"></i> <span>Manage Orders</span></a></li>
+        <li style="margin-top: auto; border-top: 1px solid #1e293b; padding-top: 10px;">
+          <a href="/index.html"><i class="fas fa-home"></i> <span>Client Store</span></a>
+        </li>
+      </ul>
+    </aside>
+
+    <!-- Main Workspace -->
+    <main class="admin-main">
+      
+      <header class="admin-header">
+        <div>
+          <h1>Customer Order Management</h1>
+          <p style="color: var(--text-muted); font-size: 14px; margin-top: 4px;">Track client checkout records, inspect shipping details, and advance timeline statuses.</p>
+        </div>
+      </header>
+
+      <!-- Orders Table Card -->
+      <section class="admin-table-card">
+        <div class="admin-table-header">
+          <div style="display:flex; align-items:center; gap:16px; flex-wrap:wrap;">
+            <h3>Order Shipments</h3>
+            <select id="admin-orders-status-filter" style="padding: 6px 12px; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 13px;">
+              <option value="">All Statuses</option>
+              <option value="Pending">Pending</option>
+              <option value="Confirmed">Confirmed</option>
+              <option value="Processing">Processing</option>
+              <option value="Shipped">Shipped</option>
+              <option value="Out for Delivery">Out for Delivery</option>
+              <option value="Delivered">Delivered</option>
+              <option value="Cancelled">Cancelled</option>
+            </select>
+          </div>
+          <div class="admin-table-search">
+            <i class="fas fa-search"></i>
+            <input type="text" id="admin-orders-search" placeholder="Search by Order ID, name, email...">
+          </div>
+        </div>
+
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>Ordered Date</th>
+                <th>Order ID</th>
+                <th>Customer Info</th>
+                <th>Grand Total</th>
+                <th>Payment Method</th>
+                <th>Status Timeline</th>
+                <th>Update Status</th>
+              </tr>
+            </thead>
+            <tbody id="admin-orders-table-body">
+              <!-- Rendered dynamically -->
+              <tr>
+                <td colspan="7" style="text-align: center; padding: 40px;">
+                  <i class="fas fa-spinner fa-spin" style="font-size: 24px; color: var(--primary);"></i>
+                  <p style="margin-top: 10px;">Loading customer order queue...</p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+    </main>
+
+  </div>
+
+  <!-- Footer Scripts -->
+  <script src="/js/utils.js"></script>
+  <script src="/js/admin.js"></script>
+</body>
+</html>
