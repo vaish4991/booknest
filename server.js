@@ -8,7 +8,22 @@ const connectDB = require('./backend/config/db');
 dotenv.config();
 
 // Connect to MongoDB
-connectDB();
+connectDB().then(async () => {
+  try {
+    const Book = require('./backend/models/Book');
+    const count = await Book.countDocuments();
+    if (count === 0) {
+      console.log('Database is empty. Running seed script...');
+      const { exec } = require('child_process');
+      exec('node seed.js', (err, stdout, stderr) => {
+        if (err) console.error('Error seeding:', err);
+        else console.log('Seed output:', stdout);
+      });
+    }
+  } catch (error) {
+    console.error('Auto-seed failed:', error);
+  }
+});
 
 const app = express();
 
