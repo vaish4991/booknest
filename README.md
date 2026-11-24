@@ -2,6 +2,12 @@
 
 BookNest is a complete, modern, fully functional Online Book Store application featuring a decoupled architectural flow.
 
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/vaish4991/booknest)
+
+### 🌐 Live Demos
+* **GitHub Pages (Static Demo):** [https://vaish4991.github.io/booknest/](https://vaish4991.github.io/booknest/)
+* **Render (Full-Stack Backend + Database):** Deployable with 1-click via the button above.
+
 ---
 
 ## 🛠️ Tech Stack

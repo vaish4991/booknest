@@ -266,7 +266,7 @@ function attachCardEvents(parentContainer) {
         return;
       }
       const bookId = card.getAttribute('data-id');
-      window.location.href = `/book-details.html?id=${bookId}`;
+      window.location.href = `book-details.html?id=${bookId}`;
     });
   });
 
@@ -279,7 +279,7 @@ function attachCardEvents(parentContainer) {
       if (!isAuthenticated()) {
         showToast('Please login to add items to cart', 'warning');
         setTimeout(() => {
-          window.location.href = '/login.html';
+          window.location.href = 'login.html';
         }, 1200);
         return;
       }

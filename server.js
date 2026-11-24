@@ -8,7 +8,8 @@ const connectDB = require('./backend/config/db');
 dotenv.config();
 
 // Connect to MongoDB
-connectDB().then(async () => {
+connectDB().then(async (conn) => {
+  if (!conn) return;
   try {
     const Book = require('./backend/models/Book');
     const count = await Book.countDocuments();

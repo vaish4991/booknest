@@ -21,14 +21,14 @@ document.addEventListener('DOMContentLoaded', () => {
           
           setTimeout(() => {
             if (data.user.role === 'admin') {
-              window.location.href = '/admin/dashboard.html';
+              window.location.href = 'admin/dashboard.html';
             } else {
               // Redirect back to referring page if applicable
               const referrer = document.referrer;
               if (referrer && (referrer.includes('cart.html') || referrer.includes('book-details.html'))) {
                 window.location.href = referrer;
               } else {
-                window.location.href = '/index.html';
+                window.location.href = 'index.html';
               }
             }
           }, 1000);
@@ -84,7 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
           setAuth(data.token, data.user);
           showToast('Registration successful! Welcome to BookNest.', 'success');
           setTimeout(() => {
-            window.location.href = '/index.html';
+            window.location.href = 'index.html';
           }, 1200);
         }
       } catch (error) {

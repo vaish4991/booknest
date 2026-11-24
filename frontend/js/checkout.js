@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (!isAuthenticated()) {
     showToast('Please login to checkout', 'warning');
     setTimeout(() => {
-      window.location.href = '/login.html';
+      window.location.href = 'login.html';
     }, 1000);
     return;
   }
@@ -56,7 +56,7 @@ async function initCheckout() {
       if (cartItems.length === 0) {
         showToast('Your shopping cart is empty!', 'warning');
         setTimeout(() => {
-          window.location.href = '/cart.html';
+          window.location.href = 'cart.html';
         }, 1200);
         return;
       }

@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (!isAuthenticated()) {
     showToast('Please login to access profile', 'warning');
     setTimeout(() => {
-      window.location.href = '/login.html';
+      window.location.href = 'login.html';
     }, 1000);
     return;
   }

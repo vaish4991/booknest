@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
   bookId = urlParams.get('id');
 
   if (!bookId) {
-    window.location.href = '/books.html';
+    window.location.href = 'books.html';
     return;
   }
 
@@ -185,7 +185,7 @@ async function loadBookDetails() {
           <i class="fas fa-exclamation-triangle"></i>
           <h3>Failed to load book details</h3>
           <p>${error.message || 'There was a connection issue.'}</p>
-          <a href="/books.html" class="btn btn-secondary" style="margin-top:16px;">Back to Catalog</a>
+          <a href="books.html" class="btn btn-secondary" style="margin-top:16px;">Back to Catalog</a>
         </div>
       `;
     }
@@ -232,7 +232,7 @@ async function addToCartAction(redirectToCheckout = false) {
   if (!isAuthenticated()) {
     showToast('Please login to buy books', 'warning');
     setTimeout(() => {
-      window.location.href = '/login.html';
+      window.location.href = 'login.html';
     }, 1200);
     return;
   }
@@ -256,7 +256,7 @@ async function addToCartAction(redirectToCheckout = false) {
       
       if (redirectToCheckout) {
         setTimeout(() => {
-          window.location.href = '/checkout.html';
+          window.location.href = 'checkout.html';
         }, 800);
       }
     }
