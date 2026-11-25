@@ -194,24 +194,51 @@ async function mockApiResponse(endpoint, method = 'GET', body = null) {
   // 3. Cart API
   if (urlPath === '/cart' || urlPath.startsWith('/cart')) {
     let mockCart = JSON.parse(localStorage.getItem('booknest_mock_cart') || '[]');
-    
+    const books = await getStaticBooks();
+
+    // Helper to find / hydrate book object
+    const resolveBook = (rawBookId, existingBook) => {
+      if (existingBook && typeof existingBook === 'object' && existingBook.title && existingBook.price) {
+        return existingBook;
+      }
+      const bId = rawBookId || (existingBook && (existingBook._id || existingBook.isbn));
+      const found = books.find(b => b._id === bId || b.isbn === bId);
+      return found || existingBook || { _id: bId, title: 'Selected Book', price: 499, discount: 0, stock: 10, coverImage: 'https://covers.openlibrary.org/b/id/8291585-L.jpg' };
+    };
+
+    // Normalize any existing cart items in mockCart
+    mockCart = mockCart.map(item => {
+      const b = resolveBook(item.bookId, item.bookId || item.book);
+      return {
+        bookId: b,
+        book: b,
+        quantity: Number(item.quantity) || 1,
+        price: Number(b.price) || item.price || 0
+      };
+    });
+
     if (method === 'GET') {
+      localStorage.setItem('booknest_mock_cart', JSON.stringify(mockCart));
       return { success: true, items: mockCart };
     }
     
     if (method === 'POST') {
       const { bookId, quantity } = body || {};
-      const books = await getStaticBooks();
-      const book = books.find(b => b._id === bookId) || { _id: bookId, title: 'Selected Book', price: 499, coverImage: '' };
+      const book = resolveBook(bookId, null);
       
-      const existing = mockCart.find(i => (i.book._id || i.book) === bookId);
+      const existing = mockCart.find(i => {
+        const id = (i.bookId && (i.bookId._id || i.bookId)) || (i.book && (i.book._id || i.book));
+        return id === bookId || id === book._id;
+      });
+
       if (existing) {
-        existing.quantity += (quantity || 1);
+        existing.quantity += (Number(quantity) || 1);
       } else {
         mockCart.push({
+          bookId: book,
           book: book,
-          quantity: quantity || 1,
-          price: book.price
+          quantity: Number(quantity) || 1,
+          price: Number(book.price) || 0
         });
       }
       localStorage.setItem('booknest_mock_cart', JSON.stringify(mockCart));
@@ -219,20 +246,27 @@ async function mockApiResponse(endpoint, method = 'GET', body = null) {
     }
 
     if (method === 'PUT') {
-      const { bookId, quantity } = body || {};
-      const item = mockCart.find(i => (i.book._id || i.book) === bookId);
+      const targetId = body?.bookId || urlPath.match(/\/cart\/(?:update\/)?([a-zA-Z0-9_-]+)/)?.[1] || urlPath.split('/')[2];
+      const qty = Number(body?.quantity) || 1;
+      const item = mockCart.find(i => {
+        const id = (i.bookId && (i.bookId._id || i.bookId)) || (i.book && (i.book._id || i.book));
+        return id === targetId;
+      });
       if (item) {
-        item.quantity = quantity;
+        item.quantity = qty;
       }
       localStorage.setItem('booknest_mock_cart', JSON.stringify(mockCart));
       return { success: true, items: mockCart };
     }
 
     if (method === 'DELETE') {
-      const deleteMatch = urlPath.match(/\/cart\/(?:remove\/)?([a-zA-Z0-9_-]+)/);
-      if (deleteMatch) {
-        const idToRemove = deleteMatch[1];
-        mockCart = mockCart.filter(i => (i.book._id || i.book) !== idToRemove);
+      const deleteMatch = urlPath.match(/\/cart\/(?:remove\/)?([a-zA-Z0-9_-]+)/) || urlPath.split('/')[2];
+      const idToRemove = (typeof deleteMatch === 'string' ? deleteMatch : deleteMatch?.[1]) || body?.bookId;
+      if (idToRemove) {
+        mockCart = mockCart.filter(i => {
+          const id = (i.bookId && (i.bookId._id || i.bookId)) || (i.book && (i.book._id || i.book));
+          return id !== idToRemove;
+        });
         localStorage.setItem('booknest_mock_cart', JSON.stringify(mockCart));
       }
       return { success: true, items: mockCart };

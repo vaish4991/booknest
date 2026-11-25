@@ -95,16 +95,19 @@ function renderOrderSummary() {
   if (!container) return;
 
   container.innerHTML = cartItems.map(item => {
-    const book = item.bookId;
+    const book = item.bookId || item.book;
     if (!book) return '';
-    const finalPrice = Math.round(book.price * (1 - book.discount / 100));
+    const price = Number(book.price) || 0;
+    const discount = Number(book.discount) || 0;
+    const qty = Number(item.quantity) || 1;
+    const finalPrice = Math.round(price * (1 - discount / 100));
 
     return `
       <div style="display:flex; justify-content:space-between; align-items:center; font-size:13px;">
         <span style="display:block; max-width:70%; text-overflow:ellipsis; overflow:hidden; white-space:nowrap;">
-          <strong>${book.title}</strong> <span style="color:var(--text-muted);">x ${item.quantity}</span>
+          <strong>${book.title || 'Book Title'}</strong> <span style="color:var(--text-muted);">x ${qty}</span>
         </span>
-        <span style="font-weight:600;">₹${finalPrice * item.quantity}</span>
+        <span style="font-weight:600;">₹${finalPrice * qty}</span>
       </div>
     `;
   }).join('');
@@ -116,24 +119,33 @@ function calculateTotals() {
   let discountSavings = 0;
 
   cartItems.forEach(item => {
-    const book = item.bookId;
+    const book = item.bookId || item.book;
     if (book) {
-      subtotal += book.price * item.quantity;
-      discountSavings += (book.price * (book.discount / 100)) * item.quantity;
+      const price = Number(book.price) || 0;
+      const discount = Number(book.discount) || 0;
+      const qty = Number(item.quantity) || 1;
+      subtotal += price * qty;
+      discountSavings += (price * (discount / 100)) * qty;
     }
   });
 
-  const taxableAmount = subtotal - discountSavings;
-  const tax = Math.round(taxableAmount * 0.05 * 100) / 100;
-  const shipping = taxableAmount > 500 ? 0 : 50;
-  const grandTotal = taxableAmount + tax + shipping;
+  const taxableAmount = Math.max(0, subtotal - discountSavings);
+  const tax = subtotal > 0 ? Math.round(taxableAmount * 0.05 * 100) / 100 : 0;
+  const shipping = (subtotal === 0 || taxableAmount > 500) ? 0 : 50;
+  const grandTotal = subtotal > 0 ? Math.round(taxableAmount + tax + shipping) : 0;
 
   // Render to DOM
-  document.getElementById('summary-subtotal').textContent = `₹${subtotal}`;
-  document.getElementById('summary-discount').textContent = `-₹${Math.round(discountSavings)}`;
-  document.getElementById('summary-tax').textContent = `₹${tax}`;
-  document.getElementById('summary-shipping').textContent = shipping === 0 ? 'Free' : `₹${shipping}`;
-  document.getElementById('summary-grand-total').textContent = `₹${Math.round(grandTotal)}`;
+  const subtotalEl = document.getElementById('summary-subtotal');
+  const discountEl = document.getElementById('summary-discount');
+  const taxEl = document.getElementById('summary-tax');
+  const shippingEl = document.getElementById('summary-shipping');
+  const grandTotalEl = document.getElementById('summary-grand-total');
+
+  if (subtotalEl) subtotalEl.textContent = `₹${subtotal}`;
+  if (discountEl) discountEl.textContent = `-₹${Math.round(discountSavings)}`;
+  if (taxEl) taxEl.textContent = `₹${tax}`;
+  if (shippingEl) shippingEl.textContent = shipping === 0 ? 'Free' : `₹${shipping}`;
+  if (grandTotalEl) grandTotalEl.textContent = `₹${grandTotal}`;
 }
 
 function toggleCardRequired(required) {

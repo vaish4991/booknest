@@ -22,7 +22,7 @@ async function loadCart() {
     const data = await apiCall('/cart', 'GET');
     
     if (data.success) {
-      cartItems = data.items;
+      cartItems = data.items || [];
       
       if (cartItems.length > 0) {
         renderCartItems();
@@ -58,38 +58,43 @@ function renderCartItems() {
   if (!container) return;
 
   container.innerHTML = cartItems.map(item => {
-    const book = item.bookId;
+    const book = item.bookId || item.book;
     if (!book) return ''; // Skip if book details missing
 
-    const finalPrice = Math.round(book.price * (1 - book.discount / 100));
-    const itemSubtotal = finalPrice * item.quantity;
+    const price = Number(book.price) || 0;
+    const discount = Number(book.discount) || 0;
+    const qty = Number(item.quantity) || 1;
+    const finalPrice = Math.round(price * (1 - discount / 100));
+    const itemSubtotal = finalPrice * qty;
+    const bookId = book._id || book.isbn || 'item';
+    const stock = Number(book.stock) || 10;
     
     // Stock alert
     let stockAlert = '';
-    if (book.stock <= 5 && book.stock > 0) {
-      stockAlert = `<span style="font-size:11px; color:var(--warning); display:block; margin-top:4px;"><i class="fas fa-exclamation-triangle"></i> Only ${book.stock} items left in stock</span>`;
+    if (stock <= 5 && stock > 0) {
+      stockAlert = `<span style="font-size:11px; color:var(--warning); display:block; margin-top:4px;"><i class="fas fa-exclamation-triangle"></i> Only ${stock} items left in stock</span>`;
     }
 
     return `
-      <div class="cart-item" data-id="${book._id}">
+      <div class="cart-item" data-id="${bookId}">
         <div class="cart-item-cover">
-          <img src="${book.coverImage}" alt="${book.title}">
+          <img src="${book.coverImage || 'https://covers.openlibrary.org/b/id/8291585-L.jpg'}" alt="${book.title || 'Book Cover'}">
         </div>
         <div class="cart-item-details">
-          <h3 class="cart-item-title">${book.title}</h3>
-          <div class="cart-item-author">by ${book.author}</div>
-          <div style="font-size: 13px; color: var(--text-muted); margin-top: 4px;">Price: ₹${finalPrice} ${book.discount > 0 ? `<span style="text-decoration:line-through; font-size:11px;">₹${book.price}</span>` : ''}</div>
+          <h3 class="cart-item-title">${book.title || 'Book Title'}</h3>
+          <div class="cart-item-author">by ${book.author || 'Author'}</div>
+          <div style="font-size: 13px; color: var(--text-muted); margin-top: 4px;">Price: ₹${finalPrice} ${discount > 0 ? `<span style="text-decoration:line-through; font-size:11px;">₹${price}</span>` : ''}</div>
           ${stockAlert}
         </div>
         <div class="quantity-picker" style="margin-bottom:0;">
-          <button class="cart-qty-minus" data-id="${book._id}"><i class="fas fa-minus"></i></button>
-          <input type="text" value="${item.quantity}" readonly style="width: 36px; padding: 4px 0;">
-          <button class="cart-qty-plus" data-id="${book._id}" data-stock="${book.stock}"><i class="fas fa-plus"></i></button>
+          <button class="cart-qty-minus" data-id="${bookId}"><i class="fas fa-minus"></i></button>
+          <input type="text" value="${qty}" readonly style="width: 36px; padding: 4px 0;">
+          <button class="cart-qty-plus" data-id="${bookId}" data-stock="${stock}"><i class="fas fa-plus"></i></button>
         </div>
         <div class="cart-item-price-col">
           <div class="cart-item-subtotal">₹${itemSubtotal}</div>
         </div>
-        <button class="btn-remove cart-item-remove" data-id="${book._id}">
+        <button class="btn-remove cart-item-remove" data-id="${bookId}">
           <i class="far fa-trash-alt"></i>
         </button>
       </div>
@@ -105,24 +110,33 @@ function calculateCartTotals() {
   let discountSavings = 0;
 
   cartItems.forEach(item => {
-    const book = item.bookId;
+    const book = item.bookId || item.book;
     if (book) {
-      subtotal += book.price * item.quantity;
-      discountSavings += (book.price * (book.discount / 100)) * item.quantity;
+      const price = Number(book.price) || 0;
+      const discount = Number(book.discount) || 0;
+      const qty = Number(item.quantity) || 1;
+      subtotal += price * qty;
+      discountSavings += (price * (discount / 100)) * qty;
     }
   });
 
-  const taxableAmount = subtotal - discountSavings;
-  const tax = Math.round(taxableAmount * 0.05 * 100) / 100;
-  const shipping = taxableAmount > 500 ? 0 : 50;
-  const grandTotal = taxableAmount + tax + shipping;
+  const taxableAmount = Math.max(0, subtotal - discountSavings);
+  const tax = subtotal > 0 ? Math.round(taxableAmount * 0.05 * 100) / 100 : 0;
+  const shipping = (subtotal === 0 || taxableAmount > 500) ? 0 : 50;
+  const grandTotal = subtotal > 0 ? Math.round(taxableAmount + tax + shipping) : 0;
 
   // Render to DOM
-  document.getElementById('summary-subtotal').textContent = `₹${subtotal}`;
-  document.getElementById('summary-discount').textContent = `-₹${Math.round(discountSavings)}`;
-  document.getElementById('summary-tax').textContent = `₹${tax}`;
-  document.getElementById('summary-shipping').textContent = shipping === 0 ? 'Free' : `₹${shipping}`;
-  document.getElementById('summary-grand-total').textContent = `₹${Math.round(grandTotal)}`;
+  const subtotalEl = document.getElementById('summary-subtotal');
+  const discountEl = document.getElementById('summary-discount');
+  const taxEl = document.getElementById('summary-tax');
+  const shippingEl = document.getElementById('summary-shipping');
+  const grandTotalEl = document.getElementById('summary-grand-total');
+
+  if (subtotalEl) subtotalEl.textContent = `₹${subtotal}`;
+  if (discountEl) discountEl.textContent = `-₹${Math.round(discountSavings)}`;
+  if (taxEl) taxEl.textContent = `₹${tax}`;
+  if (shippingEl) shippingEl.textContent = shipping === 0 ? 'Free' : `₹${shipping}`;
+  if (grandTotalEl) grandTotalEl.textContent = `₹${grandTotal}`;
 }
 
 // Attach event listeners for update/delete
@@ -130,14 +144,22 @@ function attachCartItemListeners() {
   const container = document.getElementById('cart-items-list');
   if (!container) return;
 
+  // Helper to find item by ID
+  const findCartItem = (bookId) => {
+    return cartItems.find(i => {
+      const id = (i.bookId && (i.bookId._id || i.bookId)) || (i.book && (i.book._id || i.book));
+      return id === bookId;
+    });
+  };
+
   // Minus quantity
   container.querySelectorAll('.cart-qty-minus').forEach(btn => {
     btn.addEventListener('click', async () => {
       const bookId = btn.getAttribute('data-id');
-      const item = cartItems.find(i => i.bookId._id === bookId);
+      const item = findCartItem(bookId);
       if (!item) return;
 
-      const newQty = item.quantity - 1;
+      const newQty = (item.quantity || 1) - 1;
       if (newQty < 1) {
         // If drops below 1, remove item
         await removeItem(bookId);
@@ -151,11 +173,11 @@ function attachCartItemListeners() {
   container.querySelectorAll('.cart-qty-plus').forEach(btn => {
     btn.addEventListener('click', async () => {
       const bookId = btn.getAttribute('data-id');
-      const stock = Number(btn.getAttribute('data-stock'));
-      const item = cartItems.find(i => i.bookId._id === bookId);
+      const stock = Number(btn.getAttribute('data-stock')) || 10;
+      const item = findCartItem(bookId);
       if (!item) return;
 
-      const newQty = item.quantity + 1;
+      const newQty = (item.quantity || 1) + 1;
       if (newQty > stock) {
         showToast(`Only ${stock} items available in stock`, 'warning');
         return;
@@ -179,7 +201,7 @@ async function updateQuantity(bookId, quantity) {
   try {
     const data = await apiCall(`/cart/${bookId}`, 'PUT', { quantity });
     if (data.success) {
-      cartItems = data.items;
+      cartItems = data.items || [];
       renderCartItems();
       calculateCartTotals();
       updateCartBadge();
@@ -195,15 +217,17 @@ async function removeItem(bookId) {
     const data = await apiCall(`/cart/${bookId}`, 'DELETE');
     if (data.success) {
       showToast('Item removed from cart', 'success');
-      cartItems = data.items;
+      cartItems = data.items || [];
       updateCartBadge();
       
       if (cartItems.length > 0) {
         renderCartItems();
         calculateCartTotals();
       } else {
-        document.getElementById('cart-container-view').style.display = 'none';
-        document.getElementById('cart-empty-view').style.display = 'block';
+        const cartView = document.getElementById('cart-container-view');
+        const emptyView = document.getElementById('cart-empty-view');
+        if (cartView) cartView.style.display = 'none';
+        if (emptyView) emptyView.style.display = 'block';
       }
     }
   } catch (error) {
